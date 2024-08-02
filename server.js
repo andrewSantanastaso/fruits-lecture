@@ -10,7 +10,7 @@ const Fruit = require('./models/fruit')
 
 app.use(express.json())
 app.use(logger('tiny'))
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
 
@@ -75,7 +75,7 @@ app.put('/fruits/:id', async (req, res) => {
     req.body.readyToEat === 'on' || req.body.readyToEat === true ?
         req.body.readyToEat = true : req.body.readyToEat = false
     try {
-        const updatedFruit = await Fruit.findByIdAndUpdate({ _id: req.params.id }, req.body)
+        const updatedFruit = await Fruit.findByIdAndUpdate({ _id: req.params.id }, req.body, { new: true })
         res.redirect(`/fruits/${updatedFruit._id}`)
     } catch (error) {
         res.status(400).json({ msg: error.message })
@@ -84,7 +84,7 @@ app.put('/fruits/:id', async (req, res) => {
 
 app.get('/fruits/:id/edit', async (req, res) => {
     try {
-        const foundFruit = await Fruit.findById({ _id: req.params.id })
+        const foundFruit = await Fruit.findOne({ _id: req.params.id })
         res.render('edit.ejs', {
             fruit: foundFruit
         })
@@ -94,17 +94,20 @@ app.get('/fruits/:id/edit', async (req, res) => {
 })
 //DELETE
 
-app.delete('fruits/:id', async (req, res) => {
+app.delete('/fruits/:id', async (req, res) => {
     try {
-        await Fruit.findOneAndDelete({ _id: req.params.id })
+        const fruit = await Fruit.findOneAndDelete({ _id: req.params.id })
+
             .then((fruit) => {
                 res.redirect('/fruits')
             })
 
+
     } catch (error) {
-        res.status(400).json({ msg: error.message })
+        res.status(400).json({ msg: error.message });
     }
-})
+});
+
 
 //APP LISTEN
 app.listen(PORT, () => {

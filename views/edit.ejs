@@ -9,20 +9,20 @@
 </head>
 
 <body>
-    <h1>Edit your <%=fruit.name %>
+    <h1>Edit Your <%= fruit.name %>
     </h1>
     <form action="/fruits/<%=fruit._id%>?_method=PUT" method="POST">
-        <label for="name">Fruit Name:</label>
-        <input type="text" name="name" id="name" value="<%=fruit.name5=%>">
-        <label for="color">Fruit Color:</label>
+        <label for="name">Fruit:</label>
+        <input type="text" name="name" id="name" value="<%= fruit.name %>" />
+        <label for="color">Color:</label>
         <input type="text" name="color" id="color" value="<%=fruit.color %>">
-        <label for="readyToEat">This fruit is ripe</label>
-        <input type="checkbox" name="readyToEat" id="readyToEat" <% if(readyToEat){ %>
+        <label for="readyToEat">Is it ready to eat?</label>
+        <input type="checkbox" name="readyToEat" id="readyToEat" <% if(fruit.readyToEat){ %>
         checked
-        <% } %>>
-            <button type="submit">Update this fruit</button>
+        <% } %> />
+            <button type="submit">Edit Fruit</button>
     </form>
-    <a href="/fruits">Back to All Fruits</a>
+    <a href="/fruits/">Back all Fruits</a>
 </body>
 
 </html>
